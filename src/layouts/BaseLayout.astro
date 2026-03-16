@@ -69,10 +69,25 @@ import business from '../data/business.json'
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Netlify Identity — redirige al admin tras login/invitación -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="font-sans bg-white text-gray-900 antialiased">
   <slot />
   <Footer />
   <CookieBanner />
+  <script>
+    // Redirige al admin tras aceptar invitación o resetear contraseña
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', (user: unknown) => {
+        if (!user) {
+          window.netlifyIdentity.on('login', () => {
+            document.location.href = '/admin/'
+          })
+        }
+      })
+    }
+  </script>
 </body>
 </html>

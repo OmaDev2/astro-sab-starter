@@ -1,0 +1,130 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+locale: es
+
+collections:
+
+  # ── Páginas de ciudad ────────────────────────────────────────────────────────
+  - name: locations
+    label: Páginas de ciudad
+    label_singular: Ciudad
+    folder: src/content/locations
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Ciudad, name: city, widget: string }
+      - { label: "Provincia / Estado", name: state, widget: string, required: false }
+      - { label: "H1 de la página", name: h1, widget: string, hint: "Con keyword principal + ciudad" }
+      - { label: "Title (SEO)", name: title, widget: string, hint: "Máximo 60 caracteres" }
+      - { label: "Meta description", name: description, widget: text, hint: "Máximo 155 caracteres" }
+      - { label: "Imagen hero (URL)", name: heroImage, widget: string, required: false, hint: "URL de Unsplash, ej: https://images.unsplash.com/photo-...?w=1200&h=675&fit=crop" }
+      - label: "Barrios y zonas"
+        name: neighborhoods
+        widget: list
+        required: false
+        field: { label: Barrio, name: neighborhood, widget: string }
+      - label: "Puntos de referencia"
+        name: landmarks
+        widget: list
+        required: false
+        field: { label: Landmark, name: landmark, widget: string }
+      - { label: "Rango de precios", name: priceRange, widget: string, required: false, hint: "Ej: 15-30 €/m²" }
+      - label: Keywords
+        name: keywords
+        widget: list
+        required: false
+        field: { label: Keyword, name: keyword, widget: string }
+      - label: "Preguntas frecuentes (FAQs)"
+        name: faqs
+        widget: list
+        required: false
+        fields:
+          - { label: Pregunta, name: question, widget: string }
+          - { label: Respuesta, name: answer, widget: text }
+      - { label: Contenido de la página, name: body, widget: markdown }
+
+  # ── Páginas de servicio ──────────────────────────────────────────────────────
+  - name: services
+    label: Páginas de servicio
+    label_singular: Servicio
+    folder: src/content/services
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "Nombre del servicio", name: name, widget: string }
+      - { label: "Title (SEO)", name: title, widget: string, hint: "Máximo 60 caracteres" }
+      - { label: "Meta description", name: description, widget: text, hint: "Máximo 155 caracteres" }
+      - { label: "Imagen hero (URL)", name: heroImage, widget: string, required: false }
+      - { label: "Precio orientativo", name: price, widget: string, required: false, hint: "Ej: Desde 50€" }
+      - { label: "Duración estimada", name: duration, widget: string, required: false, hint: "Ej: 1-2 días" }
+      - label: Keywords
+        name: keywords
+        widget: list
+        required: false
+        field: { label: Keyword, name: keyword, widget: string }
+      - { label: Contenido de la página, name: body, widget: markdown }
+
+  # ── Configuración del negocio ────────────────────────────────────────────────
+  - name: settings
+    label: "Configuración del negocio"
+    files:
+      - name: business
+        label: "Datos del negocio"
+        file: src/data/business.json
+        fields:
+          - { label: "Nombre del negocio", name: name, widget: string }
+          - { label: "Nombre legal", name: legalName, widget: string }
+          - { label: "Tipo Schema.org", name: type, widget: string, hint: "Ej: Plumber, Electrician, HVACBusiness, HomeAndConstructionBusiness" }
+          - { label: Teléfono, name: phone, widget: string }
+          - { label: Email, name: email, widget: string, required: false }
+          - { label: "URL del sitio", name: url, widget: string }
+          - { label: "Logo (ruta)", name: logo, widget: string, hint: "Ej: /images/logo.png" }
+          - label: "Rango de precios"
+            name: priceRange
+            widget: select
+            options: ["$", "$$", "$$$", "$$$$"]
+          - label: "Horarios de atención"
+            name: openingHours
+            widget: list
+            field: { label: Horario, name: hours, widget: string, hint: "Ej: Mo-Fr 08:00-18:00" }
+          - label: "Ciudades de servicio"
+            name: serviceArea
+            widget: list
+            field: { label: Ciudad, name: city, widget: string }
+          - label: Servicios
+            name: services
+            widget: list
+            field: { label: Servicio, name: service, widget: string }
+          - label: "Perfiles sociales"
+            name: socialProfiles
+            widget: object
+            fields:
+              - { label: Facebook, name: facebook, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }
+              - { label: "Google Business", name: google, widget: string, required: false }
+              - { label: Yelp, name: yelp, widget: string, required: false }
+          - { label: "Año de fundación", name: founded, widget: string, required: false }
+          - { label: Descripción, name: description, widget: text, hint: "1-2 frases con keyword principal" }
+          - label: "Reseñas (solo datos reales)"
+            name: reviews
+            widget: object
+            fields:
+              - { label: "Nota media", name: ratingValue, widget: string, required: false, hint: "Ej: 4.8 — dejar vacío si no tienes reseñas verificables" }
+              - { label: "Número de reseñas", name: reviewCount, widget: string, required: false }
+          - label: "Colores de marca"
+            name: brandColors
+            widget: object
+            fields:
+              - { label: "Color primario", name: primary, widget: color, hint: "Ej: #1e40af" }
+              - { label: "Color acento", name: accent, widget: color, hint: "Ej: #f97316" }
