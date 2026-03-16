@@ -1,0 +1,27 @@
+---
+interface Props {
+  name: string
+  description?: string
+  slug: string
+  icon?: string
+}
+
+const { name, description, slug, icon = '✓' } = Astro.props
+---
+
+<article class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow p-8 border border-gray-100 group">
+  <div class="w-14 h-14 bg-brand-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-brand-primary/20 transition-colors">
+    <span class="text-2xl text-brand-primary" aria-hidden="true">{icon}</span>
+  </div>
+  <h3 class="text-xl font-bold text-gray-900 mb-3">{name}</h3>
+  {description && (
+    <p class="text-gray-600 leading-relaxed mb-4">{description}</p>
+  )}
+  <a
+    href={`/servicios/${slug}/`}
+    data-astro-prefetch="hover"
+    class="text-brand-primary font-semibold hover:underline inline-flex items-center gap-1"
+  >
+    Ver más →
+  </a>
+</article>

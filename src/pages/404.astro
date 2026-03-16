@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import business from '../data/business.json'
+
+// Mensaje 404 adaptado al tipo de negocio
+const messages: Record<string, string> = {
+  Plumber: "Vaya, parece que esta tubería no lleva a ningún lado.",
+  Electrician: "¡Ups! Esta URL ha cortocircuitado.",
+  PaintingContractor: "Parece que esta página aún no tiene pintura.",
+  HVACBusiness: "Esta página se ha evaporado como el aire acondicionado.",
+  LandscapingBusiness: "Esta página no ha echado raíces todavía.",
+  HouseCleaning: "Esta página ha desaparecido más rápido que una mancha.",
+  PestControlService: "Esta URL se ha fumigado sin querer.",
+  RoofingContractor: "Se nos ha volado esta página con el viento.",
+  Attorney: "Esta URL no tiene amparo legal.",
+}
+const msg = messages[business.type] || "Esta página no existe."
+---
+
+<BaseLayout
+  title={`Página no encontrada | ${business.name}`}
+  description="La página que buscas no existe. Vuelve al inicio o llámanos directamente."
+  noSchema={true}
+>
+  <section class="min-h-screen flex items-center justify-center bg-gray-50 px-6">
+    <div class="max-w-lg text-center">
+      <p class="text-8xl font-black text-brand-primary/20 mb-4">404</p>
+      <h1 class="text-2xl font-bold text-gray-900 mb-4">{msg}</h1>
+      <p class="text-gray-500 mb-8">
+        La página que buscas no existe. Pero nosotros sí estamos aquí.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/"
+          class="px-6 py-3 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-primary/90 transition-colors"
+        >
+          Volver al inicio
+        </a>
+        <a
+          href={`tel:${business.phone}`}
+          class="px-6 py-3 border-2 border-brand-primary text-brand-primary font-semibold rounded-lg hover:bg-brand-primary hover:text-white transition-colors"
+        >
+          📞 {business.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

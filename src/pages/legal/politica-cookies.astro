@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import business from '../../data/business.json'
+---
+
+<BaseLayout
+  title={`Política de Cookies | ${business.name}`}
+  description={`Política de cookies de ${business.name}. Qué cookies usamos y cómo gestionarlas.`}
+>
+  <div class="max-w-3xl mx-auto px-6 py-20 prose prose-lg">
+    <h1>Política de Cookies</h1>
+    <p><em>Última actualización: [fecha]</em></p>
+
+    <h2>¿Qué son las cookies?</h2>
+    <p>Las cookies son pequeños archivos de texto que los sitios web guardan en tu dispositivo
+    para mejorar tu experiencia de navegación.</p>
+
+    <h2>Cookies que utilizamos</h2>
+    <table>
+      <thead>
+        <tr><th>Cookie</th><th>Tipo</th><th>Finalidad</th><th>Duración</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>cookie-consent</td>
+          <td>Técnica (localStorage)</td>
+          <td>Guarda tu preferencia sobre cookies</td>
+          <td>Indefinida (local)</td>
+        </tr>
+        <!-- Añadir filas de Google Analytics si se configura -->
+      </tbody>
+    </table>
+
+    <h2>¿Cómo gestionar las cookies?</h2>
+    <p>Puedes retirar tu consentimiento en cualquier momento eliminando el almacenamiento
+    local de tu navegador, o usando el botón de preferencias del banner de cookies.</p>
+
+    <p>También puedes configurar tu navegador para bloquear todas las cookies.</p>
+
+    <h2>Más información</h2>
+    <p>Para cualquier consulta: {business.email || '[EMAIL]'}</p>
+  </div>
+</BaseLayout>

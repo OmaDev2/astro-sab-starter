@@ -1,0 +1,63 @@
+---
+import business from '../data/business.json'
+const year = new Date().getFullYear()
+---
+
+<footer class="bg-gray-900 text-gray-400 py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-8 mb-8">
+      <!-- NAP del negocio (sin dirección — SAB) -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-3">{business.name}</h3>
+        <p class="text-sm mb-2">{business.description}</p>
+        <p class="text-sm">
+          📞 <a href={`tel:${business.phone}`} class="hover:text-white transition-colors">
+            {business.phone}
+          </a>
+        </p>
+        {business.email && (
+          <p class="text-sm mt-1">
+            ✉️ <a href={`mailto:${business.email}`} class="hover:text-white transition-colors">
+              {business.email}
+            </a>
+          </p>
+        )}
+        <p class="text-sm mt-2">
+          📍 Servicio en: {business.serviceArea.slice(0, 3).join(', ')}
+          {business.serviceArea.length > 3 && ` y ${business.serviceArea.length - 3} más`}
+        </p>
+      </div>
+
+      <!-- Servicios (enlazado interno) -->
+      <div>
+        <h3 class="text-white font-semibold mb-3">Servicios</h3>
+        <ul class="space-y-1 text-sm">
+          {business.services.map((service: string) => (
+            <li>
+              <a
+                href={`/servicios/${service.toLowerCase().replace(/\s+/g, '-')}/`}
+                class="hover:text-white transition-colors"
+              >
+                {service}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Información legal -->
+      <div>
+        <h3 class="text-white font-semibold mb-3">Legal</h3>
+        <ul class="space-y-1 text-sm">
+          <li><a href="/legal/aviso-legal/" class="hover:text-white transition-colors">Aviso Legal</a></li>
+          <li><a href="/legal/politica-privacidad/" class="hover:text-white transition-colors">Política de Privacidad</a></li>
+          <li><a href="/legal/politica-cookies/" class="hover:text-white transition-colors">Política de Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-800 pt-6 text-center text-sm">
+      <p>© {year} {business.name} — Todos los derechos reservados</p>
+    </div>
+  </div>
+</footer>

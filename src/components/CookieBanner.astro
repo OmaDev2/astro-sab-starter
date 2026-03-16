@@ -1,0 +1,53 @@
+---
+// CookieBanner.astro — RGPD compliant, vanilla JS, no tracking hasta aceptar
+---
+
+<div
+  id="cookie-banner"
+  class="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 text-white p-4 shadow-lg"
+  style="display: none;"
+  role="dialog"
+  aria-label="Aviso de cookies"
+>
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-gray-300">
+      Usamos cookies propias para mejorar tu experiencia. Puedes aceptar todas o
+      <a href="/legal/politica-cookies/" class="underline hover:text-white">gestionar tus preferencias</a>.
+    </p>
+    <div class="flex gap-3 shrink-0">
+      <button
+        id="cookie-reject"
+        class="px-4 py-2 text-sm border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors"
+      >
+        Solo necesarias
+      </button>
+      <button
+        id="cookie-accept"
+        class="px-4 py-2 text-sm bg-brand-accent hover:bg-brand-accent/90 text-white font-semibold rounded-lg transition-colors"
+      >
+        Aceptar todas
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const banner = document.getElementById('cookie-banner')
+  const acceptBtn = document.getElementById('cookie-accept')
+  const rejectBtn = document.getElementById('cookie-reject')
+
+  if (!localStorage.getItem('cookie-consent')) {
+    banner!.style.display = 'block'
+  }
+
+  acceptBtn?.addEventListener('click', () => {
+    localStorage.setItem('cookie-consent', 'all')
+    banner!.style.display = 'none'
+    // Activar Google Analytics u otros scripts aquí si se implementan
+  })
+
+  rejectBtn?.addEventListener('click', () => {
+    localStorage.setItem('cookie-consent', 'necessary')
+    banner!.style.display = 'none'
+  })
+</script>

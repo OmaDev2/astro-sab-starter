@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import business from '../../data/business.json'
+---
+
+<BaseLayout
+  title={`Política de Privacidad | ${business.name}`}
+  description={`Política de privacidad de ${business.name}. Cómo tratamos tus datos personales.`}
+>
+  <div class="max-w-3xl mx-auto px-6 py-20 prose prose-lg">
+    <h1>Política de Privacidad</h1>
+    <p><em>Última actualización: [fecha]</em></p>
+
+    <h2>1. Responsable del tratamiento</h2>
+    <ul>
+      <li><strong>Identidad:</strong> {business.name}</li>
+      <li><strong>Teléfono:</strong> {business.phone}</li>
+      <li><strong>Email:</strong> {business.email || '[EMAIL]'}</li>
+    </ul>
+
+    <h2>2. Datos que recopilamos</h2>
+    <p>A través del formulario de contacto recopilamos:</p>
+    <ul>
+      <li>Nombre</li>
+      <li>Teléfono de contacto</li>
+      <li>Mensaje con la descripción del servicio solicitado</li>
+    </ul>
+
+    <h2>3. Finalidad del tratamiento</h2>
+    <p>Los datos se utilizan exclusivamente para:</p>
+    <ul>
+      <li>Responder a tu solicitud de presupuesto</li>
+      <li>Gestionar la prestación del servicio contratado</li>
+    </ul>
+
+    <h2>4. Base legal</h2>
+    <p>El tratamiento se basa en el consentimiento del interesado (Art. 6.1.a RGPD).</p>
+
+    <h2>5. Conservación de datos</h2>
+    <p>Los datos se conservan durante el tiempo necesario para gestionar tu solicitud y
+    cumplir obligaciones legales.</p>
+
+    <h2>6. Tus derechos</h2>
+    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión y portabilidad
+    contactando en {business.email || '[EMAIL]'}.</p>
+  </div>
+</BaseLayout>

@@ -1,0 +1,105 @@
+---
+// src/pages/[city].astro — página dinámica SAB con FAQPage schema y enlazado interno
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import HeroSection from '../components/HeroSection.astro'
+import BreadcrumbSchema from '../components/BreadcrumbSchema.astro'
+import ContactSection from '../components/ContactSection.astro'
+import business from '../data/business.json'
+
+export async function getStaticPaths() {
+  const locations = await getCollection('locations')
+  return locations.map(entry => ({
+    params: { city: entry.id },
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { city, h1, title, description, heroImage, neighborhoods, faqs } = entry.data
+const { Content } = await entry.render()
+
+// Servicios para enlazado interno estructurado
+const allServices = await getCollection('services')
+
+const canonicalURL = new URL(`/${entry.id}/`, Astro.site).href
+const breadcrumbs = [
+  { name: 'Inicio', url: Astro.site!.toString() },
+  { name: city, url: canonicalURL },
+]
+
+// FAQPage JSON-LD dinámico — SSG, visible para AI crawlers, sin JS
+const faqSchema = faqs && faqs.length > 0 ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((faq: { question: string; answer: string }) => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+  }))
+}) : undefined
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalURL={canonicalURL}
+  city={city}
+  schemaSlot={faqSchema}
+>
+  <BreadcrumbSchema items={breadcrumbs} />
+
+  <HeroSection
+    h1={h1}
+    heroImageUrl={heroImage || '[URL_IMAGEN_DEFAULT]'}
+    heroImageAlt={`${business.type} en ${city}`}
+  />
+
+  <div class="max-w-4xl mx-auto px-6 py-20 prose prose-lg">
+    <Content />
+  </div>
+
+  {faqs && faqs.length > 0 && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Preguntas frecuentes en {city}</h2>
+        <div class="space-y-6">
+          {faqs.map((faq: { question: string; answer: string }) => (
+            <details class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 group">
+              <summary class="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center">
+                {faq.question}
+                <span class="text-brand-primary group-open:rotate-180 transition-transform">▼</span>
+              </summary>
+              <p class="mt-4 text-gray-600">{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Enlazado interno estructurado — pasa link juice a páginas de servicio */}
+  {allServices.length > 0 && (
+    <section class="py-16 bg-white border-t border-gray-100">
+      <div class="max-w-4xl mx-auto px-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">
+          Más servicios en {city}
+        </h2>
+        <div class="grid sm:grid-cols-2 gap-3">
+          {allServices.map(service => (
+            <a
+              href={`/servicios/${service.id}/`}
+              data-astro-prefetch="hover"
+              class="flex items-center gap-2 p-3 rounded-lg border border-gray-200 hover:border-brand-primary hover:bg-brand-primary/5 transition-colors text-sm font-medium text-gray-700 hover:text-brand-primary"
+            >
+              <span class="text-brand-primary">→</span>
+              {service.data.name} en {city}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ContactSection />
+</BaseLayout>

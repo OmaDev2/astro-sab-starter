@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import HeroSection from '../components/HeroSection.astro'
+import ServiceCard from '../components/ServiceCard.astro'
+import CityGrid from '../components/CityGrid.astro'
+import ContactSection from '../components/ContactSection.astro'
+import { getCollection } from 'astro:content'
+import business from '../data/business.json'
+
+const services = await getCollection('services')
+
+// PERSONALIZAR: URL de imagen hero de Unsplash/Pexels
+const heroImageUrl = '[URL_IMAGEN_UNSPLASH_HERO]'
+const heroImageAlt = `${business.type} profesional en ${business.serviceArea[0]}`
+---
+
+<BaseLayout
+  title={`${business.type} en ${business.serviceArea[0]} | ${business.name}`}
+  description={`${business.description} Llámanos: ${business.phone}`}
+>
+  <HeroSection
+    h1={`${business.name} — ${business.type} en ${business.serviceArea[0]}`}
+    heroImageUrl={heroImageUrl}
+    heroImageAlt={heroImageAlt}
+  />
+
+  <!-- Servicios -->
+  <section class="py-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Nuestros servicios</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {services.map(service => (
+          <ServiceCard
+            name={service.data.name}
+            description={service.data.description}
+            slug={service.id}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CityGrid />
+  <ContactSection />
+</BaseLayout>

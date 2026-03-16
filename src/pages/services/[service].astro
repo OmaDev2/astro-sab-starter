@@ -1,0 +1,56 @@
+---
+// src/pages/services/[service].astro
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { Image } from 'astro:assets'
+import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro'
+import ContactSection from '../../components/ContactSection.astro'
+import business from '../../data/business.json'
+
+export async function getStaticPaths() {
+  const services = await getCollection('services')
+  return services.map(entry => ({
+    params: { service: entry.id },
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { name, title, description, heroImage } = entry.data
+const { Content } = await entry.render()
+
+const canonicalURL = new URL(`/servicios/${entry.id}/`, Astro.site).href
+const breadcrumbs = [
+  { name: 'Inicio', url: Astro.site!.toString() },
+  { name: 'Servicios', url: new URL('/servicios/', Astro.site).href },
+  { name: name, url: canonicalURL },
+]
+---
+
+<BaseLayout title={title} description={description} canonicalURL={canonicalURL}>
+  <BreadcrumbSchema items={breadcrumbs} />
+
+  {heroImage && (
+    <div class="w-full h-72 overflow-hidden">
+      <Image
+        src={heroImage}
+        alt={`${name} - ${business.name}`}
+        width={1200}
+        height={400}
+        loading="eager"
+        fetchpriority="high"
+        format="avif"
+        fallbackFormat="webp"
+        quality={80}
+        class="w-full h-full object-cover"
+        inferSize={heroImage.startsWith('http')}
+      />
+    </div>
+  )}
+
+  <div class="max-w-4xl mx-auto px-6 py-20 prose prose-lg">
+    <Content />
+  </div>
+
+  <ContactSection />
+</BaseLayout>

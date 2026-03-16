@@ -1,0 +1,25 @@
+---
+import business from '../data/business.json'
+---
+
+<section class="py-20 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-4">
+      Área de servicio
+    </h2>
+    <p class="text-gray-600 text-center mb-12 text-lg">
+      Cubrimos toda la zona de {business.serviceArea[0]} y municipios cercanos
+    </p>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {business.serviceArea.map((city: string) => (
+        <a
+          href={`/${city.toLowerCase().replace(/\s+/g, '-')}/`}
+          data-astro-prefetch="hover"
+          class="bg-white rounded-xl p-4 text-center font-medium text-brand-primary hover:bg-brand-primary hover:text-white transition-colors shadow-sm border border-gray-100"
+        >
+          {city}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

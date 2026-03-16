@@ -1,0 +1,65 @@
+---
+import business from '../data/business.json'
+
+interface Props {
+  city?: string
+  pageType?: 'home' | 'city' | 'service'
+}
+
+const { city, pageType = 'home' } = Astro.props
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": business.type,
+      "@id": `${business.url}/#business`,
+      "name": business.name,
+      "url": business.url,
+      "telephone": business.phone,
+      "priceRange": business.priceRange,
+      "description": business.description,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${business.url}${business.logo}`
+      },
+      "image": `${business.url}${business.logo}`,
+      "areaServed": business.serviceArea.map((c: string) => ({
+        "@type": "City",
+        "name": c
+      })),
+      "openingHoursSpecification": business.openingHours.map((hours: string) => {
+        const [days, time] = hours.split(' ')
+        const [opens, closes] = time.split('-')
+        return {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": days.split('-'),
+          "opens": opens,
+          "closes": closes
+        }
+      }),
+      "sameAs": Object.values(business.socialProfiles).filter(Boolean),
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": `Servicios de ${business.name}`,
+        "itemListElement": business.services.map((service: string) => ({
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": service
+          }
+        }))
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${business.url}/#website`,
+      "url": business.url,
+      "name": business.name,
+      "publisher": { "@id": `${business.url}/#business` }
+    }
+  ]
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema, null, 0)} />
