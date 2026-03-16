@@ -39,6 +39,15 @@ const schema = {
         }
       }),
       "sameAs": Object.values(business.socialProfiles).filter(Boolean),
+      ...(business.reviews?.ratingValue && business.reviews.ratingValue !== '__RATING_VALUE__' ? {
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": business.reviews.ratingValue,
+          "reviewCount": business.reviews.reviewCount,
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      } : {}),
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
         "name": `Servicios de ${business.name}`,

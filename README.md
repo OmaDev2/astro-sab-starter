@@ -34,6 +34,8 @@ Los ficheros del template usan el formato `__NOMBRE__` para las variables que el
 | `__BRAND_SECONDARY__` | Color secundario en hex |
 | `__BRAND_ACCENT__` | Color de acento en hex (ej: `#f97316`) |
 | `__BUSINESS_DESCRIPTION__` | Descripción breve del negocio (1-2 frases) |
+| `__RATING_VALUE__` | Nota media de reseñas reales (ej: `4.8`). Si se deja sin reemplazar, el schema `aggregateRating` no se inyecta. |
+| `__REVIEW_COUNT__` | Número total de reseñas reales (ej: `47`). Solo usar con datos reales. |
 
 ## Estructura
 

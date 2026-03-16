@@ -18,6 +18,10 @@
   },
   "founded": "",
   "description": "__BUSINESS_DESCRIPTION__",
+  "reviews": {
+    "ratingValue": "__RATING_VALUE__",
+    "reviewCount": "__REVIEW_COUNT__"
+  },
   "brandColors": {
     "primary": "__BRAND_PRIMARY__",
     "accent": "__BRAND_ACCENT__"
