@@ -1,8 +1,10 @@
 ---
 import { SEO } from 'astro-seo'
 import SABSchema from '../components/SABSchema.astro'
+import NavBar from '../components/NavBar.astro'
 import Footer from '../components/Footer.astro'
 import CookieBanner from '../components/CookieBanner.astro'
+import WhatsAppButton from '../components/WhatsAppButton.astro'
 import '../styles/global.css'
 
 interface Props {
@@ -74,9 +76,11 @@ import business from '../data/business.json'
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="font-sans bg-white text-gray-900 antialiased">
+  <NavBar />
   <slot />
   <Footer />
   <CookieBanner />
+  <WhatsAppButton />
   <script>
     // Redirige al admin tras aceptar invitación o resetear contraseña
     if (window.netlifyIdentity) {
