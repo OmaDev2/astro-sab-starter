@@ -75,10 +75,21 @@ collections:
         field: { label: Keyword, name: keyword, widget: string }
       - { label: Contenido de la página, name: body, widget: markdown }
 
-  # ── Configuración del negocio ────────────────────────────────────────────────
+  # ── Configuración del negocio + Home ─────────────────────────────────────────
   - name: settings
-    label: "Configuración del negocio"
+    label: "Configuración"
     files:
+      - name: home
+        label: "Portada (Home)"
+        file: src/data/home.json
+        fields:
+          - { label: "Imagen hero (URL)", name: heroImageUrl, widget: string, hint: "URL de Unsplash/Pexels, ej: https://images.unsplash.com/photo-...?w=1920&h=1080&fit=crop" }
+          - { label: "Alt de la imagen hero", name: heroImageAlt, widget: string, required: false, hint: "Si se deja vacío se genera automáticamente" }
+          - { label: "H1 principal", name: h1, widget: string, required: false, hint: "Si se deja vacío se genera desde el nombre y tipo del negocio" }
+          - { label: "Subtítulo del hero", name: heroSubtitle, widget: string, required: false, hint: "Si se deja vacío: 'Servicio profesional en [ciudad] y alrededores'" }
+          - { label: "Texto del botón CTA", name: ctaText, widget: string, default: "Solicitar presupuesto gratis" }
+          - { label: "Título de la sección servicios", name: servicesHeading, widget: string, default: "Nuestros servicios" }
+
       - name: business
         label: "Datos del negocio"
         file: src/data/business.json

@@ -6,12 +6,16 @@ import CityGrid from '../components/CityGrid.astro'
 import ContactSection from '../components/ContactSection.astro'
 import { getCollection } from 'astro:content'
 import business from '../data/business.json'
+import home from '../data/home.json'
 
 const services = await getCollection('services')
 
-// PERSONALIZAR: URL de imagen hero de Unsplash/Pexels
-const heroImageUrl = '[URL_IMAGEN_UNSPLASH_HERO]'
-const heroImageAlt = `${business.type} profesional en ${business.serviceArea[0]}`
+const heroImageUrl = home.heroImageUrl && !home.heroImageUrl.startsWith('__') ? home.heroImageUrl : ''
+const heroImageAlt = home.heroImageAlt || `${business.type} profesional en ${business.serviceArea[0]}`
+const h1 = home.h1 || `${business.name} — ${business.type} en ${business.serviceArea[0]}`
+const heroSubtitle = home.heroSubtitle || undefined
+const ctaText = home.ctaText || 'Solicitar presupuesto gratis'
+const servicesHeading = home.servicesHeading || 'Nuestros servicios'
 ---
 
 <BaseLayout
@@ -19,7 +23,9 @@ const heroImageAlt = `${business.type} profesional en ${business.serviceArea[0]}
   description={`${business.description} Llámanos: ${business.phone}`}
 >
   <HeroSection
-    h1={`${business.name} — ${business.type} en ${business.serviceArea[0]}`}
+    h1={h1}
+    subtitle={heroSubtitle}
+    ctaText={ctaText}
     heroImageUrl={heroImageUrl}
     heroImageAlt={heroImageAlt}
   />
@@ -27,7 +33,7 @@ const heroImageAlt = `${business.type} profesional en ${business.serviceArea[0]}
   <!-- Servicios -->
   <section class="py-20">
     <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Nuestros servicios</h2>
+      <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">{servicesHeading}</h2>
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map(service => (
           <ServiceCard
