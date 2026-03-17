@@ -1,40 +1,44 @@
 ---
+import { Image } from 'astro:assets'
 import business from '../data/business.json'
+import home from '../data/home.json'
 
 interface Props {
   h1: string
   subtitle?: string
   ctaText?: string
   ctaHref?: string
-  heroImageUrl: string
-  heroImageAlt: string
 }
 
 const {
   h1,
   subtitle = `Servicio profesional en ${business.serviceArea?.[0] || 'tu zona'} y alrededores`,
-  heroImageUrl,
-  heroImageAlt,
 } = Astro.props
 
 const phone = business.phone || ''
 const whatsappNumber = phone.replace(/[\s\-\+]/g, '')
 const whatsappBase = `https://wa.me/${whatsappNumber}`
+
+// Glob import — no falla si el archivo no existe todavía (antes de ejecutar `images`)
+const heroImages = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/images/home-hero.{jpg,jpeg,png,webp}',
+  { eager: true }
+)
+const heroImageEntry = Object.values(heroImages)[0]
+const heroImage = heroImageEntry?.default
+const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${business.serviceArea?.[0]}`
 ---
 
 <section class="relative overflow-hidden bg-gray-900 min-h-[85vh] flex items-center">
 
-  <!-- Background image con overlay -->
-  {heroImageUrl && !heroImageUrl.startsWith('__') && (
+  <!-- Background image con overlay — usa <Image> de astro:assets si existe home-hero.* -->
+  {heroImage && (
     <div class="absolute inset-0 z-0">
-      <img
-        src={heroImageUrl}
+      <Image
+        src={heroImage}
         alt={heroImageAlt}
-        width="1920"
-        height="1080"
         loading="eager"
         fetchpriority="high"
-        decoding="async"
         class="w-full h-full object-cover opacity-20"
       />
     </div>

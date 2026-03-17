@@ -10,8 +10,6 @@ import home from '../data/home.json'
 
 const services = await getCollection('services')
 
-const heroImageUrl = home.heroImageUrl && !home.heroImageUrl.startsWith('__') ? home.heroImageUrl : ''
-const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${business.serviceArea?.[0]}`
 const h1 = home.h1 || `${business.name} en ${business.serviceArea?.[0]}`
 const heroSubtitle = home.heroSubtitle || undefined
 const servicesHeading = home.servicesHeading || 'Nuestros servicios'
@@ -25,8 +23,6 @@ const servicesHeading = home.servicesHeading || 'Nuestros servicios'
   <HeroSection
     h1={h1}
     subtitle={heroSubtitle}
-    heroImageUrl={heroImageUrl}
-    heroImageAlt={heroImageAlt}
   />
 
   <!-- ── STATS / CONFIANZA ───────────────────────────────── -->
