@@ -35,16 +35,15 @@ rm -f src/content/services/.gitkeep
 # Aplicar paleta
 cp "palettes/${PALETTE}.config.mjs" tailwind.config.mjs
 
-# Google Fonts URLs por paleta
-declare -A FONTS
-FONTS[industrial]="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
-FONTS[nature]="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
-FONTS[electric]="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
-FONTS[premium]="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap"
-FONTS[warm]="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap"
-FONTS[fresh]="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap"
-
-FONTS_URL="${FONTS[$PALETTE]}"
+# Google Fonts URLs por paleta (compatible con bash 3.x de macOS)
+case "$PALETTE" in
+  industrial) FONTS_URL="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" ;;
+  nature)     FONTS_URL="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" ;;
+  electric)   FONTS_URL="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" ;;
+  premium)    FONTS_URL="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Lato:wght@300;400;700&display=swap" ;;
+  warm)       FONTS_URL="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" ;;
+  fresh)      FONTS_URL="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" ;;
+esac
 sed -i '' "s|__GOOGLE_FONTS_URL__|${FONTS_URL}|g" src/layouts/BaseLayout.astro 2>/dev/null || \
   sed -i    "s|__GOOGLE_FONTS_URL__|${FONTS_URL}|g" src/layouts/BaseLayout.astro
 
