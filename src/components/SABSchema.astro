@@ -8,6 +8,34 @@ interface Props {
 
 const { city, pageType = 'home' } = Astro.props
 
+// ── Helpers ────────────────────────────────────────────────────────────────
+
+// Expande abreviaturas de días a nombres completos requeridos por schema.org
+// "Mo-Fr" → ["Monday","Tuesday","Wednesday","Thursday","Friday"]
+// "Sa"    → ["Saturday"]
+const dayAbbrMap: Record<string, string> = {
+  Mo: 'Monday', Tu: 'Tuesday', We: 'Wednesday',
+  Th: 'Thursday', Fr: 'Friday', Sa: 'Saturday', Su: 'Sunday',
+}
+const dayOrder = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+function expandDays(daysStr: string): string[] {
+  if (daysStr.includes('-')) {
+    const [start, end] = daysStr.split('-')
+    const si = dayOrder.indexOf(start)
+    const ei = dayOrder.indexOf(end)
+    if (si >= 0 && ei >= 0) return dayOrder.slice(si, ei + 1).map(d => dayAbbrMap[d])
+  }
+  return daysStr.split(',').map(d => dayAbbrMap[d.trim()]).filter((d): d is string => Boolean(d))
+}
+
+// Teléfono en formato E.164 — añade +34 si no tiene prefijo internacional
+const phoneE164 = business.phone
+  ? (business.phone.startsWith('+') ? business.phone : `+34${business.phone}`)
+  : undefined
+
+// sameAs: solo incluir perfiles no vacíos
+const sameAsUrls = Object.values(business.socialProfiles as Record<string, string>).filter(Boolean)
+
 const schema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -16,7 +44,7 @@ const schema = {
       "@id": `${business.url}/#business`,
       "name": business.name,
       "url": business.url,
-      "telephone": business.phone,
+      ...(phoneE164 ? { "telephone": phoneE164 } : {}),
       "priceRange": business.priceRange,
       "description": business.description,
       "logo": {
@@ -24,6 +52,12 @@ const schema = {
         "url": `${business.url}${business.logo}`
       },
       "image": `${business.url}${business.logo}`,
+      // SAB: dirección sin calle — solo ciudad principal del área de servicio
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": business.serviceArea[0],
+        "addressCountry": "ES"
+      },
       "areaServed": business.serviceArea.map((c: string) => ({
         "@type": "City",
         "name": c
@@ -33,13 +67,13 @@ const schema = {
         const [opens, closes] = time.split('-')
         return {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": days.split('-'),
+          "dayOfWeek": expandDays(days),
           "opens": opens,
           "closes": closes
         }
       }),
-      "sameAs": Object.values(business.socialProfiles).filter(Boolean),
-      ...(business.reviews?.ratingValue && business.reviews.ratingValue !== '__RATING_VALUE__' ? {
+      ...(sameAsUrls.length > 0 ? { "sameAs": sameAsUrls } : {}),
+      ...(business.reviews?.ratingValue && business.reviews.ratingValue !== '' ? {
         "aggregateRating": {
           "@type": "AggregateRating",
           "ratingValue": business.reviews.ratingValue,

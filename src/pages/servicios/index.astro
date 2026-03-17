@@ -1,0 +1,62 @@
+---
+// src/pages/servicios/index.astro — Listado de todos los servicios
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ServiceCard from '../../components/ServiceCard.astro'
+import ContactSection from '../../components/ContactSection.astro'
+import business from '../../data/business.json'
+
+const services = await getCollection('services')
+const canonicalURL = new URL('/servicios/', Astro.site).href
+
+const title = `Servicios de ${business.name} en ${business.serviceArea[0]}`
+const description = `Todos los servicios profesionales de ${business.name}: ${business.services.slice(0, 3).join(', ')} y más. Presupuesto gratis en 24h.`
+---
+
+<BaseLayout title={title} description={description} canonicalURL={canonicalURL}>
+
+  <!-- Cabecera -->
+  <section class="bg-gray-50 border-b border-gray-200 py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+        <a href="/" class="hover:text-brand-primary transition-colors">{business.name}</a>
+        <span>/</span>
+        <span class="text-gray-900 font-medium">Servicios</span>
+      </nav>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+        Servicios de {business.name}
+      </h1>
+      <p class="text-lg text-gray-500 max-w-2xl">
+        Soluciones profesionales en toda el área de {business.serviceArea[0]}. Presupuesto gratuito en 24h.
+      </p>
+    </div>
+  </section>
+
+  <!-- Grid de servicios -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      {services.length > 0 ? (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map(service => (
+            <ServiceCard
+              name={service.data.name}
+              description={service.data.description}
+              slug={service.id}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {business.services.map((name: string) => (
+            <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100">
+              <h2 class="text-xl font-bold text-gray-900">{name}</h2>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <ContactSection />
+
+</BaseLayout>

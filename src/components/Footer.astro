@@ -1,5 +1,17 @@
 ---
+import { getCollection } from 'astro:content'
 import business from '../data/business.json'
+
+// Usa slugs reales de la colección; fallback a business.services si la colección está vacía
+// (evita que el footer genere /servicios/instalación-de-suelo-laminado/ en vez de /servicios/suelo-laminado/)
+const serviceEntries = await getCollection('services').catch(() => [])
+const serviceLinks = serviceEntries.length > 0
+  ? serviceEntries.map((s: any) => ({ name: s.data.name, href: `/servicios/${s.id}/` }))
+  : (business.services as string[]).map((name) => ({
+      name,
+      href: `/servicios/${name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-')}/`
+    }))
+
 const year = new Date().getFullYear()
 ---
 
@@ -28,17 +40,14 @@ const year = new Date().getFullYear()
         </p>
       </div>
 
-      <!-- Servicios (enlazado interno) -->
+      <!-- Servicios (enlazado interno usando slugs reales de la colección) -->
       <div>
         <h3 class="text-white font-semibold mb-3">Servicios</h3>
         <ul class="space-y-1 text-sm">
-          {business.services.map((service: string) => (
+          {serviceLinks.map(({ name, href }) => (
             <li>
-              <a
-                href={`/servicios/${service.toLowerCase().replace(/\s+/g, '-')}/`}
-                class="hover:text-white transition-colors"
-              >
-                {service}
+              <a href={href} class="hover:text-white transition-colors">
+                {name}
               </a>
             </li>
           ))}

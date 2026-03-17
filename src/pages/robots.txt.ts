@@ -1,28 +1,19 @@
+// Genera robots.txt dinámico con la URL del sitemap correcta
 import type { APIRoute } from 'astro'
 
 export const GET: APIRoute = ({ site }) => {
-  const siteUrl = site?.toString() ?? ''
-  const robotsTxt = [
+  const siteUrl = site?.toString().replace(/\/$/, '') ?? ''
+  const body = [
     'User-agent: *',
     'Allow: /',
+    'Disallow: /admin/',
+    'Disallow: /gracias/',
     '',
-    '# AI crawlers — permitir para visibilidad en AI search',
-    'User-agent: GPTBot',
-    'Allow: /',
+    `Sitemap: ${siteUrl}/sitemap-index.xml`,
     '',
-    'User-agent: ClaudeBot',
-    'Allow: /',
-    '',
-    'User-agent: PerplexityBot',
-    'Allow: /',
-    '',
-    'User-agent: Googlebot',
-    'Allow: /',
-    '',
-    `Sitemap: ${siteUrl}sitemap-index.xml`,
   ].join('\n')
 
-  return new Response(robotsTxt, {
+  return new Response(body, {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
   })
 }

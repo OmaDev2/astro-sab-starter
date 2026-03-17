@@ -14,7 +14,8 @@ interface Props {
   ogImage?: string
   city?: string
   noSchema?: boolean
-  schemaSlot?: string   // JSON-LD adicional (FAQPage, BreadcrumbList…)
+  noindex?: boolean       // true en páginas de agradecimiento, utilidad, etc.
+  schemaSlot?: string     // JSON-LD adicional (FAQPage, BreadcrumbList…)
 }
 
 const {
@@ -24,10 +25,15 @@ const {
   ogImage = '/images/og-default.jpg',
   city,
   noSchema = false,
+  noindex = false,
   schemaSlot,
 } = Astro.props
 
 import business from '../data/business.json'
+
+// og:image debe ser URL absoluta (requerido por Open Graph y Twitter Cards)
+const siteOrigin = Astro.site?.toString().replace(/\/$/, '') ?? ''
+const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${siteOrigin}${ogImage}`
 ---
 
 <!DOCTYPE html>
@@ -41,12 +47,19 @@ import business from '../data/business.json'
     title={title}
     description={description}
     canonical={canonicalURL}
+    noindex={noindex}
+    nofollow={noindex}
     openGraph={{
       basic: {
         title: title,
         type: 'website',
-        image: ogImage,
+        image: ogImageAbsolute,
         url: canonicalURL,
+      },
+      image: {
+        width: 1200,
+        height: 630,
+        alt: title,
       },
       optional: {
         description: description,
@@ -58,7 +71,7 @@ import business from '../data/business.json'
       card: 'summary_large_image',
       title: title,
       description: description,
-      image: ogImage,
+      image: ogImageAbsolute,
     }}
   />
 
