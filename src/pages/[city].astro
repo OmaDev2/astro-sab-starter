@@ -1,6 +1,6 @@
 ---
 // src/pages/[city].astro — página dinámica SAB con FAQPage schema y enlazado interno
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import BreadcrumbSchema from '../components/BreadcrumbSchema.astro'
 import QuoteSidebar from '../components/QuoteSidebar.astro'
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props
 const { city, h1, title, description, heroImage, faqs } = entry.data
-const { Content } = await entry.render()
+const { Content } = await render(entry)
 
 // Servicios para el sidebar y enlazado interno
 const allServices = await getCollection('services')
