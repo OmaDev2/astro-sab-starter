@@ -16,12 +16,16 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
-const { name, title, description, heroImage, price, images } = entry.data
+const { name, title, description, heroImage, price } = entry.data
 const { Content } = await render(entry)
 
-const heroImg    = images?.find(i => i.position === 'hero')
-const midImg     = images?.find(i => i.position === 'mid')
-const closingImg = images?.find(i => i.position === 'closing')
+// Carga imágenes AI locales via glob — devuelve ImageMetadata para <Image> de Astro
+// Astro NO puede optimizar paths dinámicos desde frontmatter; import.meta.glob = build-time
+const localImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/images/*.jpg', { eager: true })
+const slug = entry.id
+const heroImgMeta    = localImages[`../../assets/images/${slug}-hero.jpg`]?.default
+const midImgMeta     = localImages[`../../assets/images/${slug}-mid.jpg`]?.default
+const closingImgMeta = localImages[`../../assets/images/${slug}-closing.jpg`]?.default
 
 // Otros servicios para el sidebar
 const allServices = await getCollection('services')
@@ -41,11 +45,11 @@ const breadcrumbs = [
   <BreadcrumbSchema items={breadcrumbs} />
 
   <!-- Hero imagen (16:9) — LCP prioritario -->
-  {heroImg ? (
+  {heroImgMeta ? (
     <div class="w-full h-64 md:h-96 overflow-hidden">
       <Image
-        src={heroImg.url}
-        alt={heroImg.alt}
+        src={heroImgMeta}
+        alt={`${name} - instalación profesional`}
         class="w-full h-full object-cover"
         loading="eager"
         fetchpriority="high"
@@ -101,11 +105,11 @@ const breadcrumbs = [
       <!-- Columna izquierda: Contenido principal -->
       <main>
         <!-- Imagen mid (4:3) — detalle técnico, float right en desktop -->
-        {midImg && (
+        {midImgMeta && (
           <div class="mb-6 md:float-right md:ml-8 md:mb-4 md:w-80 lg:w-96 rounded-2xl overflow-hidden shadow-md">
             <Image
-              src={midImg.url}
-              alt={midImg.alt}
+              src={midImgMeta}
+              alt={`${name} - detalle del proceso`}
               class="w-full aspect-[4/3] object-cover"
               loading="lazy"
             />
@@ -117,11 +121,11 @@ const breadcrumbs = [
         </article>
 
         <!-- Imagen closing (4:3) — resultado final, antes del FAQ -->
-        {closingImg && (
+        {closingImgMeta && (
           <div class="clear-both mt-10 rounded-2xl overflow-hidden shadow-md">
             <Image
-              src={closingImg.url}
-              alt={closingImg.alt}
+              src={closingImgMeta}
+              alt={`${name} - resultado final`}
               class="w-full aspect-[4/3] object-cover"
               loading="lazy"
             />

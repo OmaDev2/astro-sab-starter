@@ -23,16 +23,18 @@ const locations = defineCollection({
 
 const services = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/services' }),
-  schema: ({ image }) => z.object({
+  // images[] usa z.string() porque las cargamos con import.meta.glob en el template
+  // (Astro no puede optimizar paths dinámicos desde frontmatter JSON)
+  schema: z.object({
     name: z.string(),
     title: z.string(),
     description: z.string(),
-    heroImage: image().optional(),
+    heroImage: z.string().optional(),
     price: z.string().optional(),
     duration: z.string().optional(),
     keywords: z.array(z.string()).optional(),
     images: z.array(z.object({
-      url: image(),
+      url: z.string(),
       alt: z.string(),
       position: z.enum(['hero', 'mid', 'closing', 'gallery']),
       aspectRatio: z.enum(['16:9', '4:3']).default('16:9'),

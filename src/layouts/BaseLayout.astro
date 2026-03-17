@@ -81,12 +81,17 @@ import business from '../data/business.json'
   <Footer />
   <CookieBanner />
   <WhatsAppButton />
-  <script>
-    // Redirige al admin tras aceptar invitación o resetear contraseña
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', (user: unknown) => {
+  <script is:inline>
+    // Netlify Identity: redirige tokens de invitación/recovery al admin
+    // is:inline = ejecución síncrona antes de que el widget procese el hash
+    // El admin/index.html tiene el CMS completo que maneja los tokens nativamente
+    var hash = window.location.hash
+    if (hash.includes('invite_token') || hash.includes('recovery_token')) {
+      window.location.replace('/admin/' + hash)
+    } else if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', function(user) {
         if (!user) {
-          window.netlifyIdentity.on('login', () => {
+          window.netlifyIdentity.on('login', function() {
             document.location.href = '/admin/'
           })
         }
