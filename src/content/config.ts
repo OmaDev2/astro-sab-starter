@@ -23,14 +23,20 @@ const locations = defineCollection({
 
 const services = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/services' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     name: z.string(),
     title: z.string(),
     description: z.string(),
-    heroImage: z.string().optional(),
+    heroImage: image().optional(),
     price: z.string().optional(),
     duration: z.string().optional(),
     keywords: z.array(z.string()).optional(),
+    images: z.array(z.object({
+      url: image(),
+      alt: z.string(),
+      position: z.enum(['hero', 'mid', 'closing', 'gallery']),
+      aspectRatio: z.enum(['16:9', '4:3']).default('16:9'),
+    })).optional(),
   })
 })
 

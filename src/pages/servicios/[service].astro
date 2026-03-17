@@ -1,6 +1,7 @@
 ---
 // src/pages/servicios/[service].astro
 import { getCollection } from 'astro:content'
+import { Image } from 'astro:assets'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import BreadcrumbSchema from '../../components/BreadcrumbSchema.astro'
 import QuoteSidebar from '../../components/QuoteSidebar.astro'
@@ -15,8 +16,12 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
-const { name, title, description, heroImage, price } = entry.data
+const { name, title, description, heroImage, price, images } = entry.data
 const { Content } = await entry.render()
+
+const heroImg    = images?.find(i => i.position === 'hero')
+const midImg     = images?.find(i => i.position === 'mid')
+const closingImg = images?.find(i => i.position === 'closing')
 
 // Otros servicios para el sidebar
 const allServices = await getCollection('services')
@@ -35,17 +40,24 @@ const breadcrumbs = [
 <BaseLayout title={title} description={description} canonicalURL={canonicalURL}>
   <BreadcrumbSchema items={breadcrumbs} />
 
-  <!-- Hero imagen compacta -->
-  {heroImage && !heroImage.startsWith('__') && (
-    <div class="w-full h-64 md:h-80 overflow-hidden">
-      <img
-        src={`${heroImage}${heroImage.includes('?') ? '&' : '?'}w=1200&h=400&fit=crop`}
-        alt={`${name} - ${business.name}`}
-        width="1200"
-        height="400"
+  <!-- Hero imagen (16:9) — LCP prioritario -->
+  {heroImg ? (
+    <div class="w-full h-64 md:h-96 overflow-hidden">
+      <Image
+        src={heroImg.url}
+        alt={heroImg.alt}
+        class="w-full h-full object-cover"
         loading="eager"
         fetchpriority="high"
-        decoding="async"
+      />
+    </div>
+  ) : heroImage && (
+    <div class="w-full h-64 md:h-80 overflow-hidden">
+      <img
+        src={`${heroImage}${String(heroImage).includes('?') ? '&' : '?'}w=1200&h=400&fit=crop`}
+        alt={`${name} - ${business.name}`}
+        width="1200" height="400"
+        loading="eager" fetchpriority="high" decoding="async"
         class="w-full h-full object-cover"
       />
     </div>
@@ -88,9 +100,33 @@ const breadcrumbs = [
 
       <!-- Columna izquierda: Contenido principal -->
       <main>
+        <!-- Imagen mid (4:3) — detalle técnico, float right en desktop -->
+        {midImg && (
+          <div class="mb-6 md:float-right md:ml-8 md:mb-4 md:w-80 lg:w-96 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src={midImg.url}
+              alt={midImg.alt}
+              class="w-full aspect-[4/3] object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
+
         <article class="prose prose-lg prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-600 prose-li:text-gray-600 prose-strong:text-gray-900 prose-a:text-brand-primary max-w-none">
           <Content />
         </article>
+
+        <!-- Imagen closing (4:3) — resultado final, antes del FAQ -->
+        {closingImg && (
+          <div class="clear-both mt-10 rounded-2xl overflow-hidden shadow-md">
+            <Image
+              src={closingImg.url}
+              alt={closingImg.alt}
+              class="w-full aspect-[4/3] object-cover"
+              loading="lazy"
+            />
+          </div>
+        )}
 
         <!-- CTA móvil (visible solo en mobile, el sidebar está arriba) -->
         <div class="mt-10 p-6 bg-brand-primary/5 border border-brand-primary/20 rounded-2xl lg:hidden">
