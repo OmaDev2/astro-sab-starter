@@ -22,8 +22,5 @@
     "ratingValue": "__RATING_VALUE__",
     "reviewCount": "__REVIEW_COUNT__"
   },
-  "brandColors": {
-    "primary": "__BRAND_PRIMARY__",
-    "accent": "__BRAND_ACCENT__"
-  }
+  "daisyuiTheme": "__DAISYUI_THEME__"
 }

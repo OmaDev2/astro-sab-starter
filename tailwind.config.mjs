@@ -5,9 +5,9 @@ export default {
     extend: {
       colors: {
         brand: {
-          primary: '__BRAND_PRIMARY__',
-          secondary: '__BRAND_SECONDARY__',
-          accent: '__BRAND_ACCENT__',
+          // Mapeados a las variables CSS de DaisyUI — cambian automáticamente con data-theme
+          primary: 'hsl(var(--p) / <alpha-value>)',
+          accent:  'hsl(var(--a) / <alpha-value>)',
           dark: '#0f172a',
           light: '#f8fafc',
         }
@@ -20,5 +20,10 @@ export default {
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('daisyui'),
   ],
+  daisyui: {
+    themes: true,   // habilita los 35 temas built-in
+    logs: false,
+  },
 }

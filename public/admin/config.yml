@@ -133,9 +133,43 @@ collections:
             fields:
               - { label: "Nota media", name: ratingValue, widget: string, required: false, hint: "Ej: 4.8 — dejar vacío si no tienes reseñas verificables" }
               - { label: "Número de reseñas", name: reviewCount, widget: string, required: false }
-          - label: "Colores de marca"
-            name: brandColors
-            widget: object
-            fields:
-              - { label: "Color primario", name: primary, widget: color, hint: "Ej: #1e40af" }
-              - { label: "Color acento", name: accent, widget: color, hint: "Ej: #f97316" }
+          - label: "Tema visual"
+            name: daisyuiTheme
+            widget: select
+            hint: "Elige el tema visual del sitio. Vista previa en daisyui.com/docs/themes"
+            options:
+              - light
+              - dark
+              - cupcake
+              - bumblebee
+              - emerald
+              - corporate
+              - synthwave
+              - retro
+              - cyberpunk
+              - valentine
+              - halloween
+              - garden
+              - forest
+              - aqua
+              - lofi
+              - pastel
+              - fantasy
+              - wireframe
+              - black
+              - luxury
+              - dracula
+              - cmyk
+              - autumn
+              - business
+              - acid
+              - lemonade
+              - night
+              - coffee
+              - winter
+              - dim
+              - nord
+              - sunset
+              - caramellatte
+              - abyss
+              - silk
