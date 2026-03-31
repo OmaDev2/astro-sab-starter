@@ -57,36 +57,39 @@ const breadcrumbs = [
     </div>
   ) : heroImage && (
     <div class="w-full h-64 md:h-80 overflow-hidden">
-      <img
+      <Image
         src={`${heroImage}${String(heroImage).includes('?') ? '&' : '?'}w=1200&h=400&fit=crop`}
         alt={`${name} - ${business.name}`}
-        width="1200" height="400"
-        loading="eager" fetchpriority="high" decoding="async"
+        width={1200}
+        height={400}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
         class="w-full h-full object-cover"
       />
     </div>
   )}
 
   <!-- Breadcrumbs visibles -->
-  <div class="bg-gray-50 border-b border-gray-200">
+  <div class="bg-base-200 border-b border-base-300">
     <div class="max-w-6xl mx-auto px-6 py-3">
-      <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm text-gray-500">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm text-base-content/50">
         <a href="/" class="hover:text-brand-primary transition-colors">{business.name}</a>
         <span>/</span>
-        <span class="text-gray-400">Servicios</span>
+        <span class="text-base-content/40">Servicios</span>
         <span>/</span>
-        <span class="text-gray-900 font-medium">{name}</span>
+        <span class="text-base-content font-medium">{name}</span>
       </nav>
     </div>
   </div>
 
   <!-- Cabecera del servicio -->
-  <div class="bg-white border-b border-gray-100">
+  <div class="bg-base-100 border-b border-base-200">
     <div class="max-w-6xl mx-auto px-6 py-8">
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{name}</h1>
-          <p class="text-gray-500 text-lg">{description}</p>
+          <h1 class="text-3xl md:text-4xl font-bold text-base-content mb-2">{name}</h1>
+          <p class="text-base-content/60 text-lg">{description}</p>
         </div>
         {price && !price.startsWith('__') && (
           <div class="bg-brand-primary/10 border border-brand-primary/20 rounded-xl px-5 py-3 text-center shrink-0">
@@ -116,11 +119,11 @@ const breadcrumbs = [
           </div>
         )}
 
-        <article class="prose prose-lg prose-headings:text-gray-900 prose-headings:font-bold prose-p:text-gray-600 prose-li:text-gray-600 prose-strong:text-gray-900 prose-a:text-brand-primary max-w-none">
+        <article class="prose prose-lg prose-headings:text-base-content prose-headings:font-bold prose-p:text-base-content/70 prose-li:text-base-content/70 prose-strong:text-base-content prose-a:text-brand-primary max-w-none">
           <Content />
         </article>
 
-        <!-- Imagen closing (4:3) — resultado final, antes del FAQ -->
+        <!-- Imagen closing (4:3) — resultado final -->
         {closingImgMeta && (
           <div class="clear-both mt-10 rounded-2xl overflow-hidden shadow-md">
             <Image
@@ -134,7 +137,7 @@ const breadcrumbs = [
 
         <!-- CTA móvil (visible solo en mobile, el sidebar está arriba) -->
         <div class="mt-10 p-6 bg-brand-primary/5 border border-brand-primary/20 rounded-2xl lg:hidden">
-          <h3 class="text-lg font-bold text-gray-900 mb-4">¿Te interesa este servicio?</h3>
+          <h3 class="text-lg font-bold text-base-content mb-4">¿Te interesa este servicio?</h3>
           <a
             href={`https://wa.me/${business.phone?.replace(/[\s\-\+]/g, '')}?text=${encodeURIComponent(`Hola, me interesa el servicio de ${name}.`)}`}
             target="_blank" rel="noopener noreferrer"
@@ -164,9 +167,9 @@ const breadcrumbs = [
 
   <!-- Ciudades donde ofrecemos este servicio -->
   {business.serviceArea && business.serviceArea.length > 0 && (
-    <section class="bg-gray-50 border-t border-gray-100 py-12">
+    <section class="bg-base-200 border-t border-base-200 py-12">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-xl font-bold text-gray-900 mb-6">
+        <h2 class="text-xl font-bold text-base-content mb-6">
           {name} en toda el área de {business.serviceArea[0]}
         </h2>
         <div class="flex flex-wrap gap-2">
@@ -174,7 +177,7 @@ const breadcrumbs = [
             <a
               href={`/${city.toLowerCase().replace(/\s+/g, '-')}/`}
               data-astro-prefetch="hover"
-              class="px-4 py-2 bg-white border border-gray-200 hover:border-brand-primary hover:text-brand-primary rounded-lg text-sm font-medium text-gray-600 transition-colors shadow-sm"
+              class="px-4 py-2 bg-base-100 border border-base-300 hover:border-brand-primary hover:text-brand-primary rounded-lg text-sm font-medium text-base-content/65 transition-colors shadow-sm"
             >
               {name} en {city}
             </a>
