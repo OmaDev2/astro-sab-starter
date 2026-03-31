@@ -9,19 +9,22 @@ interface Props {
 const { name, description, slug, icon = '✓' } = Astro.props
 ---
 
-<article class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow p-8 border border-gray-100 group">
-  <div class="w-14 h-14 bg-brand-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-brand-primary/20 transition-colors">
+<article class="reveal bg-base-100 rounded-2xl shadow-md hover:shadow-xl border border-base-200 p-8 group transition-all duration-300 hover:-translate-y-2 flex flex-col">
+  <div class="w-14 h-14 bg-brand-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-primary/20 group-hover:scale-110 transition-all duration-300">
     <span class="text-2xl text-brand-primary" aria-hidden="true">{icon}</span>
   </div>
-  <h3 class="text-xl font-bold text-gray-900 mb-3">{name}</h3>
+  <h3 class="text-xl font-bold text-base-content mb-3">{name}</h3>
   {description && (
-    <p class="text-gray-600 leading-relaxed mb-4">{description}</p>
+    <p class="text-base-content/65 leading-relaxed mb-6 flex-1">{description}</p>
   )}
   <a
     href={`/servicios/${slug}/`}
     data-astro-prefetch="hover"
-    class="text-brand-primary font-semibold hover:underline inline-flex items-center gap-1"
+    class="inline-flex items-center gap-2 text-brand-primary font-semibold text-sm hover:gap-3 transition-all"
   >
-    Ver más →
+    Ver servicio
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+    </svg>
   </a>
 </article>

@@ -121,6 +121,17 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${siteOrigin}${o
   <CookieBanner />
   <WhatsAppButton />
   <script is:inline>
+    // Scroll reveal — activa .visible en elementos con .reveal al entrar en viewport
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+    })();
+  </script>
+  <script is:inline>
     // Netlify Identity: redirige tokens de invitación/recovery al admin
     // is:inline = ejecución síncrona antes de que el widget procese el hash
     // El admin/index.html tiene el CMS completo que maneja los tokens nativamente

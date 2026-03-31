@@ -29,9 +29,9 @@ const heroImage = heroImageEntry?.default
 const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${business.serviceArea?.[0]}`
 ---
 
-<section class="relative overflow-hidden bg-gray-900 min-h-[85vh] flex items-center">
+<section class="relative overflow-hidden bg-neutral min-h-[90vh] flex items-center">
 
-  <!-- Background image con overlay — usa <Image> de astro:assets si existe home-hero.* -->
+  <!-- Background image + multicapa gradient -->
   {heroImage && (
     <div class="absolute inset-0 z-0">
       <Image
@@ -39,42 +39,47 @@ const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${bus
         alt={heroImageAlt}
         loading="eager"
         fetchpriority="high"
-        class="w-full h-full object-cover opacity-20"
+        class="w-full h-full object-cover opacity-30"
       />
     </div>
   )}
-  <div class="absolute inset-0 z-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-gray-900/60"></div>
+  <div class="absolute inset-0 z-0 bg-gradient-to-br from-neutral via-neutral/85 to-brand-primary/20"></div>
+  <!-- Decorative blobs -->
+  <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-brand-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-accent/10 rounded-full blur-3xl pointer-events-none"></div>
 
   <!-- Split layout -->
-  <div class="relative z-10 w-full max-w-6xl mx-auto px-6 py-20">
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-6 py-24">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
       <!-- LEFT: Texto + trust signals -->
       <div>
-        <div class="inline-flex items-center gap-2 bg-brand-accent/20 border border-brand-accent/30 text-brand-accent text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+        <div class="inline-flex items-center gap-2 bg-brand-accent/15 border border-brand-accent/30 text-brand-accent text-sm font-semibold px-4 py-1.5 rounded-full mb-6 backdrop-blur-sm">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
             <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
           </svg>
           Presupuesto gratuito sin compromiso
         </div>
 
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-neutral-content leading-[1.05] mb-6 tracking-tight">
           {h1}
         </h1>
 
-        <p class="text-xl text-gray-300 mb-8 leading-relaxed">{subtitle}</p>
+        <p class="text-lg md:text-xl text-neutral-content/70 mb-8 leading-relaxed max-w-lg">{subtitle}</p>
 
         <!-- Trust signals -->
-        <ul class="space-y-3 mb-8">
+        <ul class="space-y-3 mb-10">
           {[
             'Respuesta en menos de 1 hora',
             'Sin visita previa innecesaria',
             'Garantía de trabajo realizado',
           ].map(item => (
-            <li class="flex items-center gap-3 text-gray-300 text-sm">
-              <svg class="w-5 h-5 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
+            <li class="flex items-center gap-3 text-neutral-content/80 text-sm">
+              <div class="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                <svg class="w-3 h-3 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
               {item}
             </li>
           ))}
@@ -83,7 +88,7 @@ const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${bus
         <!-- Teléfono visible en móvil -->
         <a
           href={`tel:${phone}`}
-          class="lg:hidden inline-flex items-center justify-center gap-3 w-full px-6 py-4 border-2 border-white text-white hover:bg-white hover:text-gray-900 font-bold rounded-xl text-lg transition-colors"
+          class="lg:hidden inline-flex items-center justify-center gap-3 w-full px-6 py-4 border border-neutral-content/20 bg-neutral-content/5 backdrop-blur-sm text-neutral-content hover:bg-neutral-content/10 font-bold rounded-2xl text-lg transition-all"
         >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>
@@ -94,9 +99,9 @@ const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${bus
 
       <!-- RIGHT: Formulario de presupuesto -->
       <div>
-        <div class="bg-white rounded-2xl shadow-2xl p-8">
-          <h2 class="text-2xl font-bold text-gray-900 mb-1">Solicita tu presupuesto</h2>
-          <p class="text-gray-500 text-sm mb-6">Gratis · Sin compromiso · Respuesta en &lt;1h</p>
+        <div class="bg-base-100 rounded-3xl shadow-2xl shadow-black/30 p-8 border border-base-200">
+          <h2 class="text-2xl font-bold text-base-content mb-1">Solicita tu presupuesto</h2>
+          <p class="text-base-content/50 text-sm mb-6">Gratis · Sin compromiso · Respuesta en &lt;1h</p>
 
           <form
             id="hero-form"
@@ -111,58 +116,58 @@ const heroImageAlt = home.heroImageAlt || `${business.name} profesional en ${bus
             <p class="hidden"><label>No rellenar: <input name="bot-field" /></label></p>
 
             <div>
-              <label for="hero-nombre" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              <label for="hero-nombre" class="block text-sm font-semibold text-base-content/80 mb-1.5">
                 Nombre <span class="text-red-500">*</span>
               </label>
               <input
                 type="text" id="hero-nombre" name="nombre" required
                 autocomplete="given-name" placeholder="Tu nombre"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-gray-900 placeholder-gray-400 transition-all"
+                class="w-full px-4 py-3 rounded-xl border border-base-300 bg-base-200/50 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-base-content placeholder-base-content/40 transition-all"
               />
             </div>
 
             <!-- Teléfono + Población en fila -->
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label for="hero-telefono" class="block text-sm font-semibold text-gray-700 mb-1.5">
+                <label for="hero-telefono" class="block text-sm font-semibold text-base-content/80 mb-1.5">
                   Teléfono <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="tel" id="hero-telefono" name="telefono" required
                   autocomplete="tel" placeholder="612 345 678"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-gray-900 placeholder-gray-400 transition-all"
+                  class="w-full px-4 py-3 rounded-xl border border-base-300 bg-base-200/50 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-base-content placeholder-base-content/40 transition-all"
                 />
               </div>
               <div>
-                <label for="hero-poblacion" class="block text-sm font-semibold text-gray-700 mb-1.5">
+                <label for="hero-poblacion" class="block text-sm font-semibold text-base-content/80 mb-1.5">
                   Población
                 </label>
                 <input
                   type="text" id="hero-poblacion" name="poblacion"
                   autocomplete="address-level2" placeholder="Tu ciudad"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-gray-900 placeholder-gray-400 transition-all"
+                  class="w-full px-4 py-3 rounded-xl border border-base-300 bg-base-200/50 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-base-content placeholder-base-content/40 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label for="hero-email" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              <label for="hero-email" class="block text-sm font-semibold text-base-content/80 mb-1.5">
                 Email
               </label>
               <input
                 type="email" id="hero-email" name="email"
                 autocomplete="email" placeholder="tucorreo@ejemplo.com"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-gray-900 placeholder-gray-400 transition-all"
+                class="w-full px-4 py-3 rounded-xl border border-base-300 bg-base-200/50 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-base-content placeholder-base-content/40 transition-all"
               />
             </div>
 
             <div>
-              <label for="hero-servicio" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              <label for="hero-servicio" class="block text-sm font-semibold text-base-content/80 mb-1.5">
                 Servicio
               </label>
               <select
                 id="hero-servicio" name="servicio"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-gray-900 bg-white transition-all"
+                class="w-full px-4 py-3 rounded-xl border border-base-300 bg-base-200/50 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 outline-none text-base-content transition-all"
               >
                 <option value="">Selecciona un servicio...</option>
                 {business.services?.map((s: string) => (
