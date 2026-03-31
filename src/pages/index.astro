@@ -17,7 +17,7 @@ const servicesHeading = home.servicesHeading || 'Nuestros servicios'
 
 <BaseLayout
   title={(home as any).siteTitle || `${business.name} en ${business.serviceArea?.[0]} | Presupuesto gratis`}
-  description={`${business.description} Llámanos ahora: ${business.phone}`}
+  description={(home as any).metaDescription || business.description.slice(0, 155)}
 >
 
   <HeroSection

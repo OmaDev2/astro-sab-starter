@@ -1,5 +1,5 @@
 ---
-// src/pages/[city].astro — página dinámica SAB con FAQPage schema y enlazado interno
+// src/pages/[city].astro — página dinámica SAB con enlazado interno
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import BreadcrumbSchema from '../components/BreadcrumbSchema.astro'
@@ -31,16 +31,8 @@ const breadcrumbs = [
   { name: city, url: canonicalURL },
 ]
 
-// FAQPage JSON-LD dinámico — SSG, visible para AI crawlers, sin JS
-const faqSchema = faqs && faqs.length > 0 ? JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": faqs.map((faq: { question: string; answer: string }) => ({
-    "@type": "Question",
-    "name": faq.question,
-    "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-  }))
-}) : undefined
+// FAQPage schema eliminado: Google restringe FAQPage rich results a sitios gov/health desde Aug 2023.
+// Las FAQs siguen en HTML (accordion semántico) — visibles para crawlers y AI sin riesgo de penalización.
 ---
 
 <BaseLayout
@@ -48,7 +40,6 @@ const faqSchema = faqs && faqs.length > 0 ? JSON.stringify({
   description={description}
   canonicalURL={canonicalURL}
   city={city}
-  schemaSlot={faqSchema}
 >
   <BreadcrumbSchema items={breadcrumbs} />
 
