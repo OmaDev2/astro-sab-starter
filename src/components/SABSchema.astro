@@ -36,6 +36,24 @@ const phoneE164 = business.phone
 // sameAs: solo incluir perfiles no vacíos
 const sameAsUrls = Object.values(business.socialProfiles as Record<string, string>).filter(Boolean)
 
+// Dirección: si hay calle → Local Business con dirección completa
+//            si no       → SAB sin calle (solo ciudad del área de servicio)
+const addr = (business as any).address
+const geo  = (business as any).geo
+const addressSchema = addr?.street
+  ? {
+      "@type": "PostalAddress",
+      "streetAddress": addr.street,
+      "addressLocality": addr.city || business.serviceArea[0],
+      "postalCode": addr.postalCode || "",
+      "addressCountry": "ES"
+    }
+  : {
+      "@type": "PostalAddress",
+      "addressLocality": business.serviceArea[0],
+      "addressCountry": "ES"
+    }
+
 const schema = {
   "@context": "https://schema.org",
   "@graph": [
@@ -52,12 +70,14 @@ const schema = {
         "url": `${business.url}${business.logo}`
       },
       "image": `${business.url}${business.logo}`,
-      // SAB: dirección sin calle — solo ciudad principal del área de servicio
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": business.serviceArea[0],
-        "addressCountry": "ES"
-      },
+      "address": addressSchema,
+      ...(geo?.latitude && geo?.longitude ? {
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": geo.latitude,
+          "longitude": geo.longitude
+        }
+      } : {}),
       "areaServed": business.serviceArea.map((c: string) => ({
         "@type": "City",
         "name": c

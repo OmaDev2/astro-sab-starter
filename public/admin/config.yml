@@ -126,6 +126,23 @@ collections:
               - { label: "Google Business", name: google, widget: string, required: false }
               - { label: Yelp, name: yelp, widget: string, required: false }
           - { label: "Año de fundación", name: founded, widget: string, required: false }
+          - label: "Dirección física (opcional — solo si el negocio tiene local)"
+            name: address
+            widget: object
+            required: false
+            hint: "Dejar vacío si es SAB (negocio sin local físico)"
+            fields:
+              - { label: "Calle y número", name: street, widget: string, required: false, hint: "Ej: Calle Mayor 12, 3º" }
+              - { label: "Código postal", name: postalCode, widget: string, required: false }
+              - { label: "Ciudad", name: city, widget: string, required: false }
+          - label: "Coordenadas GPS (opcional — si tienes dirección física)"
+            name: geo
+            widget: object
+            required: false
+            hint: "Busca las coordenadas en maps.google.com → clic derecho sobre el local"
+            fields:
+              - { label: Latitud, name: latitude, widget: string, required: false, hint: "Ej: 41.6488" }
+              - { label: Longitud, name: longitude, widget: string, required: false, hint: "Ej: -0.8891" }
           - { label: Descripción, name: description, widget: text, hint: "1-2 frases con keyword principal" }
           - label: "Reseñas (solo datos reales)"
             name: reviews

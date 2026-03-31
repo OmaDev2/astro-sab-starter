@@ -22,5 +22,14 @@
     "ratingValue": "__RATING_VALUE__",
     "reviewCount": "__REVIEW_COUNT__"
   },
+  "address": {
+    "street": "",
+    "postalCode": "",
+    "city": ""
+  },
+  "geo": {
+    "latitude": "",
+    "longitude": ""
+  },
   "daisyuiTheme": "__DAISYUI_THEME__"
 }
