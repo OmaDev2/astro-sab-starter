@@ -190,3 +190,5 @@ collections:
               - caramellatte
               - abyss
               - silk
+          - { label: "Google Tag Manager ID", name: gtmId, widget: string, required: false, hint: "Ej: GTM-XXXXXXX — dejar vacío si no tienes GTM" }
+          - { label: "Google Search Console", name: scVerification, widget: string, required: false, hint: "Código de verificación de Search Console (solo el código, sin las comillas)" }

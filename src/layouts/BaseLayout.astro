@@ -85,10 +85,36 @@ const ogImageAbsolute = ogImage.startsWith('http') ? ogImage : `${siteOrigin}${o
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="__GOOGLE_FONTS_URL__" rel="stylesheet" />
 
+  <!-- Google Search Console verification — solo si scVerification está configurado -->
+  {business.scVerification && (
+    <meta name="google-site-verification" content={business.scVerification} />
+  )}
+
+  <!-- Google Tag Manager — corre en Web Worker via Partytown (zero impacto en CWV) -->
+  {business.gtmId && (
+    <script type="text/partytown" set:html={`
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','${business.gtmId}');
+    `} />
+  )}
+
   <!-- Netlify Identity — redirige al admin tras login/invitación -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body class="font-sans bg-white text-gray-900 antialiased">
+  <!-- GTM noscript fallback — solo si gtmId está configurado -->
+  {business.gtmId && (
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${business.gtmId}`}
+        height="0" width="0"
+        style="display:none;visibility:hidden"
+      />
+    </noscript>
+  )}
   <NavBar />
   <slot />
   <Footer />

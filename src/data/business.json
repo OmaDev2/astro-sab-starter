@@ -31,5 +31,7 @@
     "latitude": "",
     "longitude": ""
   },
-  "daisyuiTheme": "__DAISYUI_THEME__"
+  "daisyuiTheme": "__DAISYUI_THEME__",
+  "gtmId": "",
+  "scVerification": ""
 }
